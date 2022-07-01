@@ -1,0 +1,10 @@
+vlib work
+vlog two_way_single_bit_multiplexer_tb.v two_way_single_bit_multiplexer.v
+vsim work.two_way_single_bit_multiplexer_tb
+
+add wave /two_way_single_bit_multiplexer_tb/in1
+add wave /two_way_single_bit_multiplexer_tb/in2
+add wave /two_way_single_bit_multiplexer_tb/select
+add wave /two_way_single_bit_multiplexer_tb/out
+
+run 10ms
