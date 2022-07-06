@@ -2,26 +2,30 @@
 
 module instruction_memory_tb();
 
+    parameter IM_DATA_WIDTH=32;
+    parameter IM_ADDR_WIDTH=10;
+
     reg clk;
     reg reset_n;
     reg ce;
     reg we;
-    reg [31:0] addr;
+    reg [9:0] addr;
     reg [31:0] d;
     wire [31:0] q;
 
-    reg [31:0] data[3000:0];
+    reg [31:0] data[(2 ** 9) - 1:0];
 
     initial begin
         clk = 1'b0;
         reset_n = 1'b0;
         ce = 1'b0;
         we = 1'b0;
-        addr = 32'd0;
+        addr = 10'd0;
         d = 32'd0;
         #100;
         reset_n = 1'b1;
         ce = 1'b1;
+        /*
         we = 1'b1;
         repeat(300) begin
             @(posedge clk);
@@ -29,8 +33,9 @@ module instruction_memory_tb();
             addr = addr + 1'b1;
             d = d + 1'b1;
         end
+        */
         we = 1'b0;
-        addr = 32'd0;
+        addr = 10'd0;
         d = 32'd0;
         @(posedge clk);
         repeat(300) begin
@@ -41,7 +46,7 @@ module instruction_memory_tb();
                 $display("data error!! addr : %d data : %d", addr, q);
             end
         end
-        addr = 32'd0;
+        addr = 10'd0;
         ce = 1'b0;
         repeat(256) begin
             @(posedge clk);
@@ -59,6 +64,7 @@ module instruction_memory_tb();
     instruction_memory mem1
     (
         .clk(clk),
+        .reset_n(reset_n),
         .ce(ce),
         .we(we),
         .addr(addr),

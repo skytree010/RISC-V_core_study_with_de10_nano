@@ -10,4 +10,4 @@ add wave -radix hexadecimal /instruction_memory_tb/addr
 add wave -radix hexadecimal /instruction_memory_tb/d
 add wave -radix hexadecimal /instruction_memory_tb/q
 
-run 10ms
+run -all

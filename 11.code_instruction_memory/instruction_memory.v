@@ -1,24 +1,30 @@
 module instruction_memory
 (
     input clk,
-
+    input reset_n,
     input ce,
     input we,
-    input [31:0] addr,
-
+    input [9:0] addr,
     input [31:0] d,
     output [31:0] q
 );
 
-    reg [31:0] mem[3000:0];
+    reg [31:0] mem[(2 ** 10) - 1:0];
+    reg [9:0] addr_reg;
 
-    reg [31:0] addr_reg;
+    initial begin
+        $readmemh("code.txt", mem);
+    end
 
-    always @(posedge clk) begin
-        if(ce) begin
-            if(we)
-                mem[addr] <= d;
-            addr_reg <= addr;
+    always @(posedge clk, negedge reset_n) begin
+        if(!reset_n) begin
+            addr_reg <= 10'h0;
+        end else begin
+            if(ce) begin
+                if(we)
+                    mem[addr] <= d;
+                addr_reg <= addr;
+            end
         end
     end
 
