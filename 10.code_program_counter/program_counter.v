@@ -2,7 +2,8 @@ module program_counter
 (
     input clk,
     input reset_n,
-    output [31:0] next_pc,
+    input jb_enable,
+    input [31:0] jb_value,
     output [31:0] pc
 );
 
@@ -10,22 +11,20 @@ module program_counter
     reg [31:0] next_pc_comb;
 
     always @(*) begin
-        if(!reset_n) begin
-            next_pc_comb = 32'd0;
-        end else begin
+        if(jb_enable)
+            next_pc_comb = jb_value;
+        else
             next_pc_comb = pc_reg + 1'b1;
-        end
     end
 
     always @(posedge clk, negedge reset_n) begin
         if(!reset_n) begin
-            pc_reg <= 32'd0;
+            pc_reg <= 32'h0;
         end else begin
             pc_reg <= next_pc_comb;
         end
     end
 
-    assign next_pc = next_pc_comb;
     assign pc = pc_reg;
 
 endmodule

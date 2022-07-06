@@ -4,14 +4,23 @@ module program_counter_tb();
 
     reg clk;
     reg reset_n;
-    wire [31:0] next_pc;
+    reg jb_enable;
+    reg [31:0] jb_value;
     wire [31:0] pc;
 
     initial begin
         clk = 1'b0;
         reset_n = 1'b0;
+        jb_enable = 1'b0;
+        jb_value = 32'h0;
         #100;
         reset_n = 1'b1;
+        #1000;
+        jb_value = 32'd100;
+        jb_enable = 1'b1;
+        @(posedge clk);
+        @(posedge clk);
+        jb_enable = 1'b0;
         #1000;
         $finish;
     end
@@ -25,7 +34,8 @@ module program_counter_tb();
     (
         .clk(clk),
         .reset_n(reset_n),
-        .next_pc(next_pc),
+        .jb_enable(jb_enable),
+        .jb_value(jb_value),
         .pc(pc)
     );
 
