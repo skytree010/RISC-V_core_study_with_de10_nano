@@ -13,8 +13,6 @@ module register_file_tb();
     reg [4:0] rd_index2;
     wire [31:0] rd_data1;
     wire [31:0] rd_data2;
-    wire [4:0] rd_addr1;
-    wire [4:0] rd_addr2;
 
     reg [31:0] data [31:0];
 
@@ -48,6 +46,13 @@ module register_file_tb();
             rd_index2 = rd_index2 + 1;
         end
         @(posedge clk);
+        wr_en = 1'b1;
+        wr_index = 5'h1;
+        wr_data = 32'hFF;
+        @(posedge clk);
+        rd_en1 = 1'b1;
+        rd_index1 = 5'h1;
+        @(posedge clk);
         @(posedge clk);
         $finish;
     end
@@ -69,8 +74,6 @@ module register_file_tb();
         .rd_en2(rd_en2),
         .rd_index2(rd_index2),
         .rd_data1(rd_data1),
-        .rd_data2(rd_data2),
-        .rd_addr1(rd_addr1),
-        .rd_addr2(rd_addr2)
+        .rd_data2(rd_data2)
     );
 endmodule

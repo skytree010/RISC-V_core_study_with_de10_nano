@@ -10,9 +10,7 @@ module register_file
     input rd_en2,
     input [4:0] rd_index2,
     output [31:0] rd_data1,
-    output [31:0] rd_data2,
-    output [4:0] rd_addr1,
-    output [4:0] rd_addr2
+    output [31:0] rd_data2
 );
 
     reg [31:0] mem [31:0];
@@ -52,10 +50,7 @@ module register_file
         
     end
 
-    assign rd_data1 = rd_en1 ? rd_data1_reg : 32'hz;
-    assign rd_data2 = rd_en2 ? rd_data2_reg : 32'hz;
-
-    assign rd_addr1 = rd_addr1_reg;
-    assign rd_addr2 = rd_addr2_reg;
+    assign rd_data1 = wr_index == rd_addr1_reg ? wr_data : rd_data1_reg;
+    assign rd_data2 = wr_index == rd_addr2_reg ? wr_data : rd_data2_reg;
 
 endmodule
