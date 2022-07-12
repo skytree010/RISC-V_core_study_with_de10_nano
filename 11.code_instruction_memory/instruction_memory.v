@@ -23,11 +23,12 @@ module instruction_memory
             if(ce) begin
                 if(we)
                     mem[addr] <= d;
-                addr_reg <= addr;
+                else
+                    addr_reg <= addr;
             end
         end
     end
 
-    assign q = ce ? mem[addr_reg] : 32'hz;
+    assign q = ce ? mem[addr_reg] : 32'h0;
 
 endmodule
