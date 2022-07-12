@@ -11,14 +11,7 @@ module decode_logic_tb();
     wire [4:0] rs2;
     wire [4:0] rd;
     wire [31:0] imm;
-    wire beq;
-    wire bne;
-    wire blt;
-    wire bge;
-    wire bltu;
-    wire bgeu;
-    wire addi;
-    wire add;
+    wire [5:0] operation_con;
 
     initial begin
         clk = 1'b0;
@@ -49,13 +42,6 @@ module decode_logic_tb();
         .rs2(rs2),
         .rd(rd),
         .imm(imm),
-        .beq(beq),
-        .bne(bne),
-        .blt(blt),
-        .bge(bge),
-        .bltu(bltu),
-        .bgeu(bgeu),
-        .addi(addi),
-        .add(add)
+        .operation_con(operation_con)
     );
 endmodule
