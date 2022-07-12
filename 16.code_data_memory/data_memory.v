@@ -24,9 +24,6 @@ module data_memory
     reg [31:0] write_data_reg;
     reg write_req_reg;
 
-    reg [31:0] priv_data_addr;
-    reg [31:0] priv_data_result;
-
     assign addr_comb = src1_value + imm;
     assign addr_mem_comb = {{2{1'b0}}, addr_comb[31:2]};
 
@@ -35,8 +32,6 @@ module data_memory
             write_data_reg <= 32'h0;
             write_addr_reg <= 5'h0;
             write_req_reg <= 1'b0;
-            priv_data_addr <= 32'h0;
-            priv_data_result <= 32'h0;
         end else begin
             if(!jump_branch_enable) begin
                 case(operation_con)
@@ -49,10 +44,7 @@ module data_memory
                     end
                 */
                     LW: begin
-                        if(addr_mem_comb == priv_data_addr)
-                            write_data_reg <= priv_data_result;
-                        else
-                            write_data_reg <= data_mem[addr_mem_comb];
+                        write_data_reg <= data_mem[addr_mem_comb];
                         write_addr_reg <= rd;
                         write_req_reg <= 1'b1;
                     end
@@ -71,8 +63,6 @@ module data_memory
                     SW: begin
                         data_mem[addr_mem_comb] <= src2_value;
                         write_req_reg <= 1'b0;
-                        priv_data_addr <= addr_mem_comb;
-                        priv_data_result <= src2_value;
                     end
                     default: begin
                         write_req_reg <= 1'b0;
