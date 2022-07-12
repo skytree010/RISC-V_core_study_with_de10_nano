@@ -8,10 +8,9 @@ add wave -radix unsigned /alu_tb/src1_value
 add wave -radix unsigned /alu_tb/src2_value
 add wave -radix unsigned /alu_tb/imm
 add wave -radix unsigned /alu_tb/rd
-add wave /alu_tb/addi
-add wave /alu_tb/add
-add wave /alu_tb/alu_done
+add wave -radix unsigned /alu_tb/operation_con
+add wave /alu_tb/write_req
 add wave -radix unsigned /alu_tb/write_addr
-add wave -radix unsigned /alu_tb/result
+add wave -radix unsigned /alu_tb/write_data
 
 run -all
