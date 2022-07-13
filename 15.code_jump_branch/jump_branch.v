@@ -56,10 +56,10 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= 1'b1;
+                        taken_branch_reg <= ~jb_enable;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
-                    write_req_reg <= 1'b1;
+                    write_req_reg <= ~jb_enable;
                     write_addr_reg <= rd;
                     write_data_reg <= {pc_next_value[29:0], {2{1'b0}}};
                 end
@@ -67,11 +67,11 @@ module jump_branch
                     if(jalr_value == pc_wait_reg[2] + 1'b1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= 1'b1;
+                        taken_branch_reg <= ~jb_enable;
                         target_pc_reg <= jalr_value;
                     end
                     
-                    write_req_reg <= 1'b1;
+                    write_req_reg <= ~jb_enable;
                     write_addr_reg <= rd;
                     write_data_reg <= {pc_next_value[29:0], {2{1'b0}}};
                 end
@@ -79,7 +79,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value == src2_value);
+                        taken_branch_reg <= (src1_value == src2_value) ? ~jb_enable : 1'b0;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     
@@ -89,7 +89,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value != src2_value);
+                        taken_branch_reg <= (src1_value != src2_value) ? ~jb_enable : 1'b0;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     write_req_reg <= 1'b0;
@@ -98,7 +98,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value < src2_value) ^ (src1_value[31] != src2_value[31]);
+                        taken_branch_reg <= (src1_value < src2_value) ^ (src1_value[31] != src2_value[31]) ? ~jb_enable : 1'b0;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     write_req_reg <= 1'b0;
@@ -107,7 +107,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value >= src2_value) ^ (src1_value[31] != src2_value[31]);
+                        taken_branch_reg <= (src1_value >= src2_value) ^ (src1_value[31] != src2_value[31]) ? ~jb_enable : 1'b0;
                     target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     write_req_reg <= 1'b0;
@@ -116,7 +116,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value < src2_value);
+                        taken_branch_reg <= (src1_value < src2_value) ? ~jb_enable : 1'b0;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     write_req_reg <= 1'b0;
@@ -125,7 +125,7 @@ module jump_branch
                     if(imm[31:2] == 30'h1) begin
                         taken_branch_reg <= 1'b0;
                     end else begin
-                        taken_branch_reg <= (src1_value >= src2_value);
+                        taken_branch_reg <= (src1_value >= src2_value) ? ~jb_enable : 1'b0;
                         target_pc_reg <= pc_wait_reg[2] + {imm[31], imm[31], imm[31:2]};
                     end
                     write_req_reg <= 1'b0;
