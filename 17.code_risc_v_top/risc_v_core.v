@@ -34,6 +34,12 @@ module risc_v_core
 
     wire [5:0] operation_con;
 
+    wire [3:0] data_memory_ce;
+    wire [3:0] data_memory_we;
+    wire [29:0] data_memory_addr;
+    wire [31:0] data_memory_d;
+    wire [31:0] data_memory_q;
+
     program_counter pc1
     (
         .clk(clk),
@@ -115,7 +121,7 @@ module risc_v_core
         .write_data(jump_branch_write_data)
     );
 
-    data_memory dm1
+    data_memory_ctrl dm_ctrl1
     (
         .clk(clk),
         .reset_n(reset_n),
@@ -125,9 +131,56 @@ module risc_v_core
         .imm(imm),
         .rd(rd),
         .operation_con(operation_con),
+
         .write_req(data_memory_write_req),
         .write_addr(data_memory_write_addr),
-        .write_data(data_memory_write_data)
+        .write_data(data_memory_write_data),
+
+        .mem_addr(data_memory_addr),
+        .mem_we(data_memory_we),
+        .mem_ce(data_memory_ce),
+        .mem_d(data_memory_d),
+        .mem_q(data_memory_q)
+    );
+
+    data_memory dm0
+    (
+        .clk(clk),
+        .ce(data_memory_ce[0]),
+        .we(data_memory_we[0]),
+        .addr(data_memory_addr[7:0]),
+        .d(data_memory_d[7:0]),
+        .q(data_memory_q[7:0])
+    );
+
+    data_memory dm1
+    (
+        .clk(clk),
+        .ce(data_memory_ce[1]),
+        .we(data_memory_we[1]),
+        .addr(data_memory_addr[7:0]),
+        .d(data_memory_d[15:8]),
+        .q(data_memory_q[15:8])
+    );
+
+    data_memory dm2
+    (
+        .clk(clk),
+        .ce(data_memory_ce[2]),
+        .we(data_memory_we[2]),
+        .addr(data_memory_addr[7:0]),
+        .d(data_memory_d[23:16]),
+        .q(data_memory_q[23:16])
+    );
+
+    data_memory dm3
+    (
+        .clk(clk),
+        .ce(data_memory_ce[3]),
+        .we(data_memory_we[3]),
+        .addr(data_memory_addr[7:0]),
+        .d(data_memory_d[31:24]),
+        .q(data_memory_q[31:24])
     );
 
     assign register_write_req = alu_write_req | jump_branch_write_req | data_memory_write_req;

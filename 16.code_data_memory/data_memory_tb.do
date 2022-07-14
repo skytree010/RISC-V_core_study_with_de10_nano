@@ -1,5 +1,5 @@
 vlib work
-vlog data_memory_tb.v data_memory.v
+vlog data_memory_tb.v data_memory_ctrl.v data_memory.v
 vsim work.data_memory_tb
 
 add wave /data_memory_tb/clk

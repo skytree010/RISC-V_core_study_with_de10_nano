@@ -31,7 +31,7 @@ module data_memory_tb ();
         @(posedge clk);
         repeat(100) begin
             operation_con = SW;
-            src2_value = src2_value + 2;
+            src2_value = src2_value + 100;
             imm = imm + 4;
             @(posedge clk);
         end
@@ -52,7 +52,13 @@ module data_memory_tb ();
         clk = ~clk;
     end
 
-    data_memory dm1
+    wire [3:0] ce;
+    wire [3:0] we;
+    wire [29:0] addr;
+    wire [31:0] d;
+    wire [31:0] q;
+
+    data_memory_ctrl dm_ctrl1
     (
         .clk(clk),
         .reset_n(reset_n),
@@ -65,6 +71,54 @@ module data_memory_tb ();
 
         .write_req(write_req),
         .write_addr(write_addr),
-        .write_data(write_data)
+        .write_data(write_data),
+
+        .mem_addr(addr),
+        .mem_we(we),
+        .mem_ce(ce),
+        .mem_d(d),
+        .mem_q(q)
     );
+
+    data_memory dm0
+    (
+        .clk(clk),
+        .ce(ce[0]),
+        .we(we[0]),
+        .addr(addr[7:0]),
+        .d(d[7:0]),
+        .q(q[7:0])
+    );
+
+    data_memory dm1
+    (
+        .clk(clk),
+        .ce(ce[1]),
+        .we(we[1]),
+        .addr(addr[7:0]),
+        .d(d[15:8]),
+        .q(q[15:8])
+    );
+
+    data_memory dm2
+    (
+        .clk(clk),
+        .ce(ce[2]),
+        .we(we[2]),
+        .addr(addr[7:0]),
+        .d(d[23:16]),
+        .q(q[23:16])
+    );
+
+    data_memory dm3
+    (
+        .clk(clk),
+        .ce(ce[3]),
+        .we(we[3]),
+        .addr(addr[7:0]),
+        .d(d[31:24]),
+        .q(q[31:24])
+    );
+    
+
 endmodule
