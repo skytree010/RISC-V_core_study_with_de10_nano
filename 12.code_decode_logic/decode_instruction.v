@@ -142,7 +142,7 @@ module decode_instruction
         if(is_r_instruction_comb)
             funct7_comb = instruction[31:25];
         else if(is_i_instruction_comb)
-            funct7_comb = 7'h0;
+            funct7_comb = instruction[31:25];
         else if(is_s_instruction_comb)
             funct7_comb = 7'h0;
         else if(is_b_instruction_comb)
